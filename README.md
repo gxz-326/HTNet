@@ -56,6 +56,85 @@ We investigate the effects of the transformer layer’s head count on accuracy i
 
 ``` python main_HTNet.py --train True```
 
+---
+
+## 🆕 HTNet for Facial Palsy Recognition and Grading
+
+This repository now includes an adaptation of HTNet for **facial palsy (facial nerve paralysis) recognition and grading** using FNP and CK+ datasets.
+
+### Quick Start for Facial Palsy
+
+```bash
+# 1. Install requirements
+pip install -r requirements.txt
+
+# 2. Prepare your dataset
+python prepare_dataset.py \
+    --dataset_type FNP \
+    --data_root ./datasets/facial_palsy/FNP \
+    --output_csv ./datasets/facial_palsy/fnp_annotation.csv
+
+# 3. Train the model
+python train_facial_palsy.py \
+    --data_root ./datasets/facial_palsy/FNP \
+    --train_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --val_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --dataset_type FNP \
+    --num_classes 6 \
+    --batch_size 32 \
+    --epochs 100
+
+# 4. Evaluate the model
+python evaluate_facial_palsy.py \
+    --model_path ./checkpoints/fnp/best_model.pth \
+    --data_root ./datasets/facial_palsy/FNP \
+    --test_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --dataset_type FNP
+
+# 5. Run inference on new images
+python demo_inference.py \
+    --model_path ./checkpoints/fnp/best_model.pth \
+    --image_path ./test_image.jpg
+```
+
+### Features for Facial Palsy Application
+
+- ✅ Support for **FNP** and **CK+** datasets
+- ✅ **6-grade classification** (House-Brackmann scale) or simplified 3-class
+- ✅ **Facial landmark detection** and region-based analysis
+- ✅ **Transfer learning** from micro-expression pre-trained models
+- ✅ **Data augmentation** preserving facial asymmetry
+- ✅ **Attention visualization** to understand model decisions
+- ✅ **Comprehensive evaluation** with confusion matrix and per-class metrics
+
+### Documentation
+
+For detailed instructions on using HTNet for facial palsy recognition, please see:
+
+📘 **[README_FACIAL_PALSY.md](README_FACIAL_PALSY.md)** - Complete guide for facial palsy recognition
+
+### Key Files for Facial Palsy
+
+- `facial_palsy_dataset.py` - Dataset loaders for FNP and CK+
+- `train_facial_palsy.py` - Training script with command-line interface
+- `evaluate_facial_palsy.py` - Evaluation with detailed metrics
+- `demo_inference.py` - Real-time inference on images
+- `prepare_dataset.py` - Dataset preparation utilities
+- `data_augmentation.py` - Specialized augmentation for facial images
+- `visualize_attention.py` - Attention map visualization
+- `config_examples.yaml` - Configuration templates
+
+### Why HTNet for Facial Palsy?
+
+HTNet's hierarchical architecture is particularly well-suited for facial palsy assessment:
+
+1. **Multi-scale Analysis**: Captures both local features (eye/mouth) and global facial asymmetry
+2. **Region-based Processing**: Analyzes key diagnostic regions independently
+3. **Attention Mechanism**: Focuses on clinically relevant facial areas
+4. **Proven Architecture**: Strong performance on subtle facial movement detection
+
+---
+
 # Citation
 If you find our work useful for your project, please consider citing the paper<br>
 ```bibtex
