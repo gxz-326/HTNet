@@ -1,0 +1,225 @@
+# Configuration Examples for Facial Palsy Recognition
+# Use these configurations as reference for different scenarios
+
+# ===================================================
+# Configuration 1: FNP Dataset - 6-class (House-Brackmann Scale)
+# ===================================================
+fnp_6class:
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_val.csv
+  test_csv: ./datasets/facial_palsy/fnp_test.csv
+  dataset_type: FNP
+  num_classes: 6
+  
+  # Model architecture
+  image_size: 224
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  
+  # Training parameters
+  batch_size: 32
+  epochs: 100
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  num_workers: 4
+  
+  # Paths
+  save_dir: ./checkpoints/fnp_6class
+  log_dir: ./logs/fnp_6class
+  save_interval: 10
+
+# ===================================================
+# Configuration 2: FNP Dataset - 3-class Simplified
+# ===================================================
+fnp_3class:
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_3class_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_3class_val.csv
+  dataset_type: FNP
+  num_classes: 3  # Normal, Mild, Severe
+  
+  # Model architecture
+  image_size: 224
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  
+  # Training parameters
+  batch_size: 32
+  epochs: 150
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/fnp_3class
+  log_dir: ./logs/fnp_3class
+
+# ===================================================
+# Configuration 3: CK+ Dataset
+# ===================================================
+ckplus:
+  data_root: ./datasets/facial_palsy/CK_prepared
+  train_csv: ./datasets/facial_palsy/ckplus_train.csv
+  val_csv: ./datasets/facial_palsy/ckplus_val.csv
+  dataset_type: CK+
+  num_classes: 6
+  
+  # Model architecture
+  image_size: 224
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  
+  # Training parameters
+  batch_size: 32
+  epochs: 120
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/ckplus
+  log_dir: ./logs/ckplus
+
+# ===================================================
+# Configuration 4: Transfer Learning from Micro-expression
+# ===================================================
+transfer_learning:
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_val.csv
+  dataset_type: FNP
+  num_classes: 6
+  
+  # Pretrained model
+  pretrained_path: ./ourmodel_threedatasets_weights/best_model.pth
+  
+  # Model architecture (must match pretrained model)
+  image_size: 224
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  
+  # Training parameters (fine-tuning)
+  batch_size: 32
+  epochs: 80
+  learning_rate: 0.00005  # Lower learning rate for fine-tuning
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/transfer_learning
+  log_dir: ./logs/transfer_learning
+
+# ===================================================
+# Configuration 5: Large Model - High Accuracy
+# ===================================================
+large_model:
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_val.csv
+  dataset_type: FNP
+  num_classes: 6
+  
+  # Model architecture - Larger capacity
+  image_size: 224
+  patch_size: 7
+  dim: 384
+  heads: 4
+  num_hierarchies: 3
+  block_repeats: [3, 3, 12]
+  
+  # Training parameters
+  batch_size: 16  # Smaller batch due to larger model
+  epochs: 150
+  learning_rate: 0.00008
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/large_model
+  log_dir: ./logs/large_model
+
+# ===================================================
+# Configuration 6: Small Model - Fast Training
+# ===================================================
+small_model:
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_val.csv
+  dataset_type: FNP
+  num_classes: 6
+  
+  # Model architecture - Smaller capacity
+  image_size: 112
+  patch_size: 7
+  dim: 128
+  heads: 2
+  num_hierarchies: 2
+  block_repeats: [2, 2]
+  
+  # Training parameters
+  batch_size: 64  # Larger batch due to smaller model
+  epochs: 100
+  learning_rate: 0.0002
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/small_model
+  log_dir: ./logs/small_model
+
+# ===================================================
+# Configuration 7: Combined FNP + CK+ Training
+# ===================================================
+combined_datasets:
+  data_root: ./datasets/facial_palsy/combined
+  train_csv: ./datasets/facial_palsy/combined_train.csv
+  val_csv: ./datasets/facial_palsy/combined_val.csv
+  dataset_type: FNP  # Use FNP loader for combined dataset
+  num_classes: 6
+  
+  # Model architecture
+  image_size: 224
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  
+  # Training parameters
+  batch_size: 32
+  epochs: 120
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  
+  # Paths
+  save_dir: ./checkpoints/combined
+  log_dir: ./logs/combined
+
+# ===================================================
+# Notes:
+# ===================================================
+# 
+# To use a configuration:
+# 1. Save the desired configuration to a separate YAML file
+# 2. Modify train_facial_palsy.py to load from YAML, or
+# 3. Use the parameters directly in command line arguments
+#
+# Example command line usage:
+# python train_facial_palsy.py --data_root ./datasets/facial_palsy/FNP \
+#     --train_csv ./datasets/facial_palsy/fnp_train.csv \
+#     --num_classes 6 --batch_size 32 --epochs 100
+#
+# Recommended configurations by use case:
+# - Best accuracy: large_model
+# - Fast prototyping: small_model  
+# - Limited labeled data: transfer_learning
+# - General purpose: fnp_6class
+# - Simplified task: fnp_3class
