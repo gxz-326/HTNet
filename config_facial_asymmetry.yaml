@@ -1,0 +1,110 @@
+# Configuration for HTNet with Diagonal Micro-Attention and ROI Modules
+# For Facial Palsy Recognition with Enhanced Asymmetry Detection
+
+# Dataset Configuration
+dataset:
+  type: FNP  # Options: FNP, CK+
+  data_root: ./datasets/facial_palsy/FNP
+  train_csv: ./datasets/facial_palsy/fnp_train.csv
+  val_csv: ./datasets/facial_palsy/fnp_val.csv
+  test_csv: ./datasets/facial_palsy/fnp_test.csv
+  image_size: 224
+  num_classes: 6  # House-Brackmann grades (I-VI)
+
+# Model Architecture
+model:
+  patch_size: 7
+  dim: 256
+  heads: 3
+  num_hierarchies: 3
+  block_repeats: [2, 2, 10]
+  dropout: 0.1
+  
+  # Advanced Asymmetry Detection Features
+  use_micro_attention: true    # Enable Diagonal Micro-Attention
+  use_roi_module: true          # Enable ROI Module
+  num_roi_regions: 5            # Number of facial ROI regions
+  
+  # Asymmetry-specific parameters
+  asymmetry_weight: 0.5         # Weight for asymmetry scoring (0-1)
+
+# Training Configuration
+training:
+  batch_size: 32
+  epochs: 200
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  num_workers: 4
+  
+  # Optimization
+  optimizer: Adam
+  scheduler: ReduceLROnPlateau
+  scheduler_params:
+    mode: max
+    factor: 0.5
+    patience: 10
+    
+  # Checkpointing
+  save_dir: ./checkpoints/asymmetry_detection
+  log_dir: ./logs/asymmetry_detection
+  save_interval: 10
+
+# Evaluation Configuration
+evaluation:
+  batch_size: 32
+  num_workers: 4
+  output_dir: ./evaluation_results
+  
+  # Visualization
+  visualize_roi: true
+  visualize_asymmetry: true
+  num_visualization_samples: 10
+
+# Clinical Interpretation Settings
+clinical:
+  # Key facial regions for asymmetry assessment
+  roi_regions:
+    - forehead          # Region 0: Forehead wrinkles
+    - left_eye          # Region 1: Left eye closure
+    - right_eye         # Region 2: Right eye closure
+    - nose              # Region 3: Nasolabial fold
+    - mouth             # Region 4: Smile symmetry
+  
+  # Asymmetry thresholds by grade
+  asymmetry_thresholds:
+    grade_1: [0.0, 0.05]    # Normal: minimal asymmetry
+    grade_2: [0.05, 0.15]   # Slight weakness
+    grade_3: [0.15, 0.30]   # Obvious weakness
+    grade_4: [0.30, 0.50]   # Disfiguring weakness
+    grade_5: [0.50, 0.75]   # Barely perceptible motion
+    grade_6: [0.75, 1.0]    # No movement
+
+# Notes on Usage
+# ===============
+
+# Training with asymmetry detection:
+# python train_facial_palsy.py \
+#     --data_root ./datasets/facial_palsy/FNP \
+#     --train_csv ./datasets/facial_palsy/fnp_train.csv \
+#     --val_csv ./datasets/facial_palsy/fnp_val.csv \
+#     --use_micro_attention \
+#     --use_roi_module \
+#     --num_roi_regions 5 \
+#     --epochs 200
+
+# Evaluation with visualization:
+# python evaluate_facial_palsy.py \
+#     --model_path ./checkpoints/asymmetry_detection/best_model.pth \
+#     --data_root ./datasets/facial_palsy/FNP \
+#     --test_csv ./datasets/facial_palsy/fnp_test.csv \
+#     --use_micro_attention \
+#     --use_roi_module
+
+# Visualize asymmetry and ROI:
+# python visualize_asymmetry_roi.py \
+#     --model_path ./checkpoints/asymmetry_detection/best_model.pth \
+#     --data_root ./datasets/facial_palsy/FNP \
+#     --test_csv ./datasets/facial_palsy/fnp_test.csv \
+#     --use_micro_attention \
+#     --use_roi_module \
+#     --num_samples 10
