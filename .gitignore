@@ -17,3 +17,77 @@ STSNet_for_part_C.py
 ourmodel_threedatasets_weights
 datasets/MMEW_Micro_Exp_delete_others.csv
 datasets/MMEW_Micro_Exp_delete_others_anger.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Logs and checkpoints
+checkpoints/
+logs/
+*.log
+runs/
+tensorboard_logs/
+
+# Visualizations
+visualizations/
+*.png
+*.jpg
+*.jpeg
+!images/*.png
+!images/*.jpg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data
+*.csv
+*.npy
+*.npz
+*.pkl
+*.pickle
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
