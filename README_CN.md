@@ -2,6 +2,15 @@
 
 这是将 HTNet（层次化Transformer网络）从微表情识别迁移到面瘫（面神经麻痹）识别和分级任务的实现，支持 FNP 和 CK+ 数据集。
 
+## 🆕 新功能：对角微注意力 & ROI模块
+
+本项目新增了两个强大的模块，显著提升面部不对称检测能力：
+
+- **对角微注意力模块** - 精确检测左右面部的细微运动差异和动态不对称
+- **ROI注意力模块** - 自动聚焦人脸关键区域，抑制背景噪声
+
+详见：[FEATURE_DIAGONAL_MICRO_ATTENTION_ROI.md](FEATURE_DIAGONAL_MICRO_ATTENTION_ROI.md) | [README_ENHANCED_MODULES.md](README_ENHANCED_MODULES.md)
+
 ## 📋 项目概述
 
 面瘫是一种面部肌肉无力或麻痹的疾病，通常影响面部的一侧。本项目将原本用于微表情识别的 HTNet 架构改造为自动评估面瘫严重程度的系统，使用 House-Brackmann 分级量表。
@@ -87,6 +96,25 @@ python train_facial_palsy.py \
     --log_dir ./logs/fnp
 ```
 
+#### 🆕 训练增强模型（推荐）
+
+使用对角微注意力和ROI模块获得更好的性能：
+
+```bash
+python train_enhanced_facial_palsy.py \
+    --data_root ./datasets/facial_palsy/FNP \
+    --train_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --val_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --dataset_type FNP \
+    --num_classes 6 \
+    --batch_size 32 \
+    --epochs 100 \
+    --use_diagonal_attn True \
+    --use_roi True \
+    --save_dir ./checkpoints/enhanced \
+    --log_dir ./logs/enhanced
+```
+
 #### 使用预训练权重（迁移学习）
 
 ```bash
@@ -150,13 +178,28 @@ python visualize_attention.py \
     --visualize_regions
 ```
 
+### 🆕 7. ROI和不对称性可视化
+
+可视化增强模型检测的关键面部区域和不对称性：
+
+```bash
+python visualize_roi_and_asymmetry.py \
+    --model_path ./checkpoints/enhanced/best_model_enhanced.pth \
+    --data_root ./datasets/facial_palsy/FNP \
+    --test_csv ./datasets/facial_palsy/fnp_test.csv \
+    --dataset_type FNP \
+    --num_samples 10 \
+    --output_dir ./visualizations/roi_asymmetry
+```
+
 ## 📁 项目文件说明
 
 ### 核心文件
 
-- **`Model.py`** - HTNet 模型架构定义
+- **`Model.py`** - HTNet 模型架构定义（包含增强模块）
 - **`facial_palsy_dataset.py`** - FNP 和 CK+ 数据集加载器
-- **`train_facial_palsy.py`** - 训练脚本
+- **`train_facial_palsy.py`** - 基础模型训练脚本
+- **🆕 `train_enhanced_facial_palsy.py`** - 增强模型训练脚本
 - **`evaluate_facial_palsy.py`** - 评估脚本
 - **`demo_inference.py`** - 推理演示脚本
 - **`prepare_dataset.py`** - 数据集准备工具
@@ -165,6 +208,8 @@ python visualize_attention.py \
 
 - **`data_augmentation.py`** - 专门为面部图像设计的数据增强
 - **`visualize_attention.py`** - 注意力图可视化工具
+- **🆕 `visualize_roi_and_asymmetry.py`** - ROI和不对称性可视化工具
+- **🆕 `test_enhanced_model.py`** - 增强模型测试套件
 - **`config_examples.yaml`** - 配置示例模板
 - **`quick_start.sh`** - 快速开始脚本
 
@@ -172,6 +217,8 @@ python visualize_attention.py \
 
 - **`README_FACIAL_PALSY.md`** - 详细的英文文档
 - **`README_CN.md`** - 本文档（中文说明）
+- **🆕 `README_ENHANCED_MODULES.md`** - 增强模块详细文档
+- **🆕 `FEATURE_DIAGONAL_MICRO_ATTENTION_ROI.md`** - 新功能说明
 
 ## 🎯 为什么 HTNet 适合面瘫评估？
 
