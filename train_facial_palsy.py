@@ -172,7 +172,10 @@ def train_model(config):
         heads=config.heads,
         num_hierarchies=config.num_hierarchies,
         block_repeats=config.block_repeats,
-        num_classes=config.num_classes
+        num_classes=config.num_classes,
+        use_micro_attention=config.use_micro_attention,
+        use_roi_module=config.use_roi_module,
+        num_roi_regions=config.num_roi_regions
     )
     
     model = model.to(device)
@@ -291,6 +294,13 @@ def main():
                        help='Number of hierarchies in HTNet')
     parser.add_argument('--block_repeats', type=int, nargs='+', default=[2, 2, 10],
                        help='Number of transformer blocks at each hierarchy')
+    
+    parser.add_argument('--use_micro_attention', action='store_true',
+                       help='Enable Diagonal Micro-Attention for facial asymmetry detection')
+    parser.add_argument('--use_roi_module', action='store_true',
+                       help='Enable ROI module for facial region focusing')
+    parser.add_argument('--num_roi_regions', type=int, default=5,
+                       help='Number of ROI regions to detect (eyes, nose, mouth, etc.)')
     
     parser.add_argument('--batch_size', type=int, default=32,
                        help='Batch size for training')

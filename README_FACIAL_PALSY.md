@@ -155,6 +155,8 @@ python train_facial_palsy.py \
 
 ### Advanced Training Options
 
+Train with Diagonal Micro-Attention and ROI modules for enhanced asymmetry detection:
+
 ```bash
 python train_facial_palsy.py \
     --data_root ./datasets/facial_palsy/FNP \
@@ -166,12 +168,20 @@ python train_facial_palsy.py \
     --heads 3 \
     --num_hierarchies 3 \
     --block_repeats 2 2 10 \
+    --use_micro_attention \
+    --use_roi_module \
+    --num_roi_regions 5 \
     --batch_size 32 \
     --epochs 200 \
     --learning_rate 0.0001 \
     --weight_decay 0.0001 \
     --save_interval 10
 ```
+
+**Key parameters for asymmetry detection:**
+- `--use_micro_attention`: Enable diagonal micro-attention for left-right facial comparison
+- `--use_roi_module`: Enable ROI module for automatic facial region detection
+- `--num_roi_regions`: Number of facial ROI regions (default: 5 for eyes, nose, mouth, forehead, cheeks)
 
 ## Evaluation
 
@@ -185,8 +195,34 @@ python evaluate_facial_palsy.py \
     --dataset_type FNP \
     --num_classes 6 \
     --batch_size 32 \
+    --use_micro_attention \
+    --use_roi_module \
+    --num_roi_regions 5 \
     --output_dir ./evaluation_results
 ```
+
+### Visualize Asymmetry Detection and ROI Maps
+
+Visualize how the model detects facial asymmetry and focuses on key regions:
+
+```bash
+python visualize_asymmetry_roi.py \
+    --model_path ./checkpoints/fnp/best_model.pth \
+    --data_root ./datasets/facial_palsy/FNP \
+    --test_csv ./datasets/facial_palsy/fnp_annotation.csv \
+    --dataset_type FNP \
+    --use_micro_attention \
+    --use_roi_module \
+    --num_roi_regions 5 \
+    --num_samples 10 \
+    --output_dir ./visualizations
+```
+
+This generates:
+- ROI mask visualizations showing facial region focus
+- Asymmetry heatmaps highlighting left-right differences
+- Per-region attention maps for eyes, nose, mouth, etc.
+- Asymmetry analysis by facial palsy grade
 
 ### Evaluation Outputs
 
@@ -208,6 +244,30 @@ The HTNet architecture is well-suited for facial palsy assessment because:
 2. **Multi-scale Analysis**: Processes facial regions at different scales
 3. **Attention Mechanism**: Focuses on diagnostically relevant facial areas
 4. **Region-based Approach**: Analyzes key facial regions independently (eyes, mouth) and their interactions
+
+### Advanced Features for Facial Asymmetry Detection
+
+#### Diagonal Micro-Attention Module (对角微注意力模块)
+
+The **Diagonal Micro-Attention** module is specifically designed for precise detection of facial asymmetry:
+
+- **Left-Right Comparison**: Automatically compares left and right facial regions to detect subtle movement differences
+- **Dynamic Asymmetry Detection**: Identifies asymmetric patterns in facial expressions and movements
+- **Fine-grained Feature Extraction**: Uses diagonal attention patterns to capture micro-level changes between symmetric facial areas
+- **Asymmetry Scoring**: Generates asymmetry maps that highlight regions with the most significant left-right differences
+
+Enable with: `--use_micro_attention`
+
+#### Region of Interest (ROI) Module (感兴趣区域模块)
+
+The **ROI Module** automatically discovers and focuses on key facial regions:
+
+- **Automatic Region Detection**: Identifies 5 key facial regions (eyes, nose, mouth, forehead, cheeks)
+- **Background Suppression**: Filters out non-facial areas and background noise
+- **Facial Prior Integration**: Uses anatomical knowledge to focus on diagnostically relevant areas
+- **Adaptive Weighting**: Dynamically adjusts attention to affected regions based on severity
+
+Enable with: `--use_roi_module --num_roi_regions 5`
 
 ### Key Facial Regions for Palsy Assessment
 
@@ -332,13 +392,38 @@ Please refer to the original HTNet repository for license information.
 
 For issues specific to the facial palsy adaptation, please open an issue in the repository.
 
+## Advanced Features Summary
+
+### Diagonal Micro-Attention Benefits
+
+✓ **Precise Asymmetry Detection**: Detects subtle left-right facial differences  
+✓ **Fine-grained Analysis**: Captures micro-level movement variations  
+✓ **Dynamic Scoring**: Generates asymmetry confidence maps  
+✓ **Improved Grading**: Better discrimination between similar severity grades  
+
+### ROI Module Benefits
+
+✓ **Automatic Region Focus**: No manual annotation required  
+✓ **Background Suppression**: Filters out irrelevant information  
+✓ **Adaptive Attention**: Focuses on affected areas  
+✓ **Reduced False Positives**: By excluding non-facial regions  
+
+### Combined Benefits
+
+When used together, the Diagonal Micro-Attention and ROI modules provide:
+- **Enhanced Sensitivity**: Better detection of subtle facial palsy signs
+- **Improved Specificity**: More accurate grade differentiation
+- **Interpretability**: Clear visualization of affected regions
+- **Clinical Relevance**: Aligns with clinical assessment practices
+
 ## Future Improvements
 
 Potential enhancements:
 
-1. **Data Augmentation**: Add facial transformations, lighting variations
+1. **Temporal Analysis**: Extend to video sequences for dynamic assessment
 2. **Multi-task Learning**: Simultaneously predict grade and affected side
-3. **Temporal Analysis**: Use video sequences instead of single frames
-4. **Attention Visualization**: Visualize which facial regions contribute to predictions
+3. **3D Facial Modeling**: Incorporate depth information
+4. **Explainable AI**: Enhanced interpretation of model decisions
 5. **Ensemble Methods**: Combine multiple models for better accuracy
 6. **Cross-dataset Validation**: Validate on multiple datasets for generalization
+7. **Real-time Inference**: Optimize for clinical deployment
