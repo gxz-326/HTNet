@@ -17,3 +17,48 @@ STSNet_for_part_C.py
 ourmodel_threedatasets_weights
 datasets/MMEW_Micro_Exp_delete_others.csv
 datasets/MMEW_Micro_Exp_delete_others_anger.csv
+
+# YFP Facial Palsy Detection outputs
+yfp_weights/
+yfp_results/
+test_metrics_output.txt
+test_confusion_matrix.png
+test_roc_curve.png
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment
+venv/
+env/
+ENV/
+.env
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+.DS_Store
+Thumbs.db

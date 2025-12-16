@@ -1,0 +1,7 @@
+subject_id,image_path,label
+subject_001,subject_001/img_001.jpg,0
+subject_001,subject_001/img_002.jpg,0
+subject_002,subject_002/img_001.jpg,1
+subject_002,subject_002/img_002.jpg,1
+subject_003,subject_003/img_001.jpg,0
+subject_003,subject_003/img_002.jpg,0

@@ -1,4 +1,4 @@
-# HTNet for micro-expression recognition
+# HTNet for micro-expression recognition and facial palsy detection
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/htnet-for-micro-expression-recognition/micro-expression-recognition-on-casme3)](https://paperswithcode.com/sota/micro-expression-recognition-on-casme3?p=htnet-for-micro-expression-recognition)
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/htnet-for-micro-expression-recognition/micro-expression-recognition-on-casme-ii-1)](https://paperswithcode.com/sota/micro-expression-recognition-on-casme-ii-1?p=htnet-for-micro-expression-recognition)
@@ -7,6 +7,41 @@ Official implementation of our paper:
 **HTNet for micro-expression recognition**  
 Zhifeng Wang, Kaihao Zhang, Wenhan Luo, Ramesh Sankaranarayana 
 [[paper]](https://arxiv.org/abs/2307.14637)
+
+## 🆕 NEW: YFP Facial Palsy Detection
+
+This repository now includes **facial palsy detection** capabilities using the YouTube Facial Palsy (YFP) dataset with comprehensive evaluation metrics!
+
+### Quick Start for YFP Facial Palsy Detection
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Create a sample dataset for testing
+python create_sample_yfp_dataset.py --num_subjects 10 --images_per_subject 5
+
+# Train facial palsy detection model
+python train_yfp_palsy_detection.py \
+    --train true \
+    --csv_file ./datasets/YFP_sample/yfp_optical_flow_dataset.csv \
+    --data_root ./datasets/YFP_sample \
+    --use_optical_flow true \
+    --epochs 20
+```
+
+**Key Features:**
+- 🎯 **Binary Classification**: Normal vs. Facial Palsy
+- 📊 **Comprehensive Metrics**: Accuracy, Precision, Recall, F1, AUC-ROC, and more
+- 🔄 **LOSO Cross-Validation**: Leave-One-Subject-Out for robust evaluation
+- 📈 **Visualization**: Confusion matrices and ROC curves
+- ⚡ **Optical Flow Support**: Enhanced motion feature extraction
+
+**Documentation:**
+- [Quick Start Guide](QUICKSTART_YFP.md) - Get started in 5 minutes
+- [Detailed Documentation](YFP_README.md) - Complete guide for YFP dataset
+
+---
 
 A  Hierarchical Transformer Network (HTNet) to identify critical areas of facial muscle movement.
 

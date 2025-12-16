@@ -1,0 +1,7 @@
+subject_id,onset_frame,apex_frame,label
+subject_001,subject_001/onset_001.jpg,subject_001/apex_001.jpg,0
+subject_001,subject_001/onset_002.jpg,subject_001/apex_002.jpg,0
+subject_002,subject_002/onset_001.jpg,subject_002/apex_001.jpg,1
+subject_002,subject_002/onset_002.jpg,subject_002/apex_002.jpg,1
+subject_003,subject_003/onset_001.jpg,subject_003/apex_001.jpg,0
+subject_003,subject_003/onset_002.jpg,subject_003/apex_002.jpg,0
